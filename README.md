@@ -4,6 +4,20 @@
 
 ProductSense AI is a production-quality browser extension that analyzes products on major e-commerce sites and delivers actionable buy recommendations powered by AI.
 
+### Product Analysis
+
+![Product Analysis](./public/img1.png)
+
+### Dashboard
+
+![Dashboard](./public/img2.png)
+
+### AI Insights
+
+![AI Insights](./public/img3.png)
+![AI Insights](./public/img4.png)
+![AI Insights](./public/img5.png)
+
 ## Supported Sites
 
 | Site | Status |
