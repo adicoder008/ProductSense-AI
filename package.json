@@ -1,0 +1,36 @@
+{
+  "name": "productsense-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI-powered shopping assistant browser extension",
+  "workspaces": [
+    "packages/*",
+    "web",
+    "extension"
+  ],
+  "scripts": {
+    "dev": "concurrently -n web,ext -c blue,magenta \"npm run dev:web\" \"npm run dev:extension\"",
+    "dev:web": "npm run dev --workspace=web",
+    "dev:extension": "npm run dev --workspace=extension",
+    "build": "npm run build --workspace=@productsense/shared && npm run build --workspace=web && npm run build --workspace=extension",
+    "build:web": "npm run build --workspace=web",
+    "build:extension": "npm run build --workspace=extension",
+    "db:generate": "npm run db:generate --workspace=web",
+    "db:push": "npm run db:push --workspace=web",
+    "db:studio": "npm run db:studio --workspace=web",
+    "lint": "npm run lint --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "postinstall": "npm run build --workspace=@productsense/shared"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "overrides": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zod": "3.24.2"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

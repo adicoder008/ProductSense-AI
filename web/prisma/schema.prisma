@@ -1,0 +1,117 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String           @id @default(cuid())
+  clerkId     String           @unique
+  email       String?
+  preferences UserPreference?
+  chatSessions ChatSession[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([clerkId])
+}
+
+model UserPreference {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  budget          Float?
+  currency        String   @default("INR")
+  priorities      String[] @default([])
+  preferredBrands String[] @default([])
+  avoidBrands     String[] @default([])
+  minRating       Float?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Product {
+  id            String          @id @default(cuid())
+  externalId    String
+  site          String
+  url           String
+  name          String
+  brand         String?
+  category      String?
+  currentPrice  Float
+  currency      String          @default("INR")
+  rating        Float?
+  reviewCount   Int?
+  imageUrl      String?
+  rawData       Json?
+  priceSnapshots PriceSnapshot[]
+  analyses      AnalysisCache[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@unique([site, externalId])
+  @@index([site, externalId])
+  @@index([url])
+}
+
+model PriceSnapshot {
+  id            String   @id @default(cuid())
+  productId     String
+  product       Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  price         Float
+  originalPrice Float?
+  discount      Float?
+  currency      String   @default("INR")
+  recordedAt    DateTime @default(now())
+
+  @@index([productId, recordedAt])
+}
+
+model AnalysisCache {
+  id           String   @id @default(cuid())
+  productId    String
+  product      Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  analysisData Json
+  modelUsed    String
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+
+  @@index([productId, expiresAt])
+}
+
+model ChatSession {
+  id        String        @id @default(cuid())
+  userId    String?
+  user      User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  productId String?
+  productUrl String?
+  messages  ChatMessage[]
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@index([userId])
+}
+
+model ChatMessage {
+  id        String      @id @default(cuid())
+  sessionId String
+  session   ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  role      String
+  content   String      @db.Text
+  createdAt DateTime    @default(now())
+
+  @@index([sessionId, createdAt])
+}
+
+model RedditCache {
+  id           String   @id @default(cuid())
+  productKey   String   @unique
+  consensusData Json
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+
+  @@index([productKey, expiresAt])
+}

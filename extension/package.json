@@ -1,0 +1,51 @@
+{
+  "name": "extension",
+  "displayName": "ProductSense AI",
+  "version": "1.0.0",
+  "description": "AI-powered shopping assistant for smarter purchase decisions",
+  "author": "ProductSense",
+  "scripts": {
+    "dev": "plasmo dev",
+    "prebuild": "node scripts/generate-icons.js",
+    "build": "plasmo build",
+    "predev": "node scripts/generate-icons.js",
+    "package": "plasmo package",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@productsense/shared": "*",
+    "plasmo": "^0.89.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "lucide-react": "^0.469.0",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.6.0"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.287",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2"
+  },
+  "manifest": {
+    "host_permissions": [
+      "https://www.amazon.in/*",
+      "https://amazon.in/*",
+      "https://www.amazon.com/*",
+      "https://www.flipkart.com/*",
+      "https://www.myntra.com/*",
+      "https://www.nykaa.com/*",
+      "https://www.reliancedigital.in/*",
+      "https://www.croma.com/*",
+      "http://localhost:3000/*"
+    ],
+    "permissions": [
+      "storage",
+      "activeTab",
+      "scripting"
+    ]
+  }
+}
